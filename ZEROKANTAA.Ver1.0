@@ -1,0 +1,92 @@
+from IPython.display import clear_output
+def board():
+    b=[]
+    for i in range(0,9,1):
+        b.append(' ')
+    return b
+
+def win(board):
+    if(board[0]==board[1]==board[2]=="X" or board[0]==board[1]==board[2]=="O" or board[0]==board[3]==board[6]=="X" or board[0]==board[4]==board[8]=="X" or board[4]==board[1]==board[7]=="X" or board[8]==board[5]==board[2]=="X" or board[6]==board[4]==board[2]=="X" or board[3]==board[4]==board[5]=="X" or board[6]==board[7]==board[8]=="X" or board[0]==board[3]==board[6]=="O" or board[0]==board[4]==board[8]=="O" or board[4]==board[1]==board[7]=="O" or board[8]==board[5]==board[2]=="O" or board[6]==board[4]==board[2]=="O" or board[3]==board[4]==board[5]=="O" or board[6]==board[7]==board[8]=="O"):
+        return True
+    else:
+        return False
+
+def player_input(board):
+    marker=input("First player enter your symbol:")
+    
+    e=False
+    d=False
+    while(d==False and e==False):
+        position=int(input("First player enter postion of choice :"))
+        board[position]=marker
+        d=win(board)
+        if(d==True):
+            print("Player 1 won")
+            print (display_board(place_marker(board, marker, position)))
+            break
+        else:
+            
+            print (display_board(place_marker(board, marker, position)))
+        position2=int(input("Second player enter postion of choice :"))
+        if(position2==position):
+            break
+        if(marker=="O"):
+            marker2="X"
+            board[position2]=marker2
+        else:
+            marker2="O"
+            board[position2]=marker2
+        e=win(board)
+        if(e==True):
+            print("Player2 won")
+            print(display_board(place_marker(board, marker2, position2)))
+            break
+        else:
+            
+            print(display_board(place_marker(board, marker2, position2)))
+        
+    return replay()
+    
+
+def place_marker(board, marker, position):
+    k=0
+    s=[]
+    
+    while(k!=position):
+        if(board[k]==" "):
+            s.append("*")
+        else:
+            s.append(board[k])
+        k=k+1
+    s.append(marker)
+    j=position+1
+    while(j<9):
+        if(board[j]==" "):
+            s.append("*")
+        else:
+            s.append(board[j])
+        j=j+1
+    return s
+
+from IPython.display import clear_output
+
+def display_board(board):
+    p=[]
+    d=0
+    for i in range(0,len(board),1):
+        if(board[i]=='X' or board[i]=='O' and d<9):
+            d=d+1
+            p.append(board[i])
+        elif(board[i]=='*'):
+            p.append(' ')
+            continue
+    print("    |   |\n  {l[0]} | {l[1]} | {l[2]} \n    |   |\n-------------\n    |   |\n  {l[3]} | {l[4]} | {l[5]} \n    |   |\n-------------\n    |   |\n  {l[6]} | {l[7]} | {l[8]} \n    |   |".format(l=p))
+
+def replay():
+    clear_output()
+    c=input("Do you want to continue Yes or No : ")
+    if(c=="Yes"):
+        player_input(board()) 
+    else:
+        print("Thanks")
+replay()
